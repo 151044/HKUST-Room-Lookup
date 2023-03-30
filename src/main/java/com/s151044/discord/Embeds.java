@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Helper class for creating embeds.
  */
-public class EmbedHelper {
+public class Embeds {
 
     /**
      * Creates an embed with the specified description and title.

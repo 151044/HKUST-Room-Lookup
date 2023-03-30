@@ -52,7 +52,7 @@ public class Main {
             Document root = Jsoup.connect(finalUrl).get();
             Element depts = root.getElementsByClass("depts").get(0);
             List<String> deptList = depts.children().eachText();
-            deptList.stream().forEach(str -> {
+            deptList.forEach(str -> {
                 try {
                     Files.writeString(Path.of("data/" + str + ".html"), Jsoup.connect(finalUrl + "subject/" + str).get().html());
                 } catch (IOException e) {
@@ -62,7 +62,8 @@ public class Main {
                 }
             });
         } else {
-            System.out.println("Reading from data/ ...");
+            System.out.println("Reading from data directory...");
+
         }
     }
 }

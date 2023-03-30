@@ -1,6 +1,6 @@
 package com.s151044.discord.handlers;
 
-import com.s151044.discord.EmbedHelper;
+import com.s151044.discord.Embeds;
 import com.s151044.discord.Messages;
 import com.s151044.discord.commands.Command;
 import com.s151044.discord.commands.CommandList;
@@ -73,13 +73,13 @@ public class MessageHandler extends ListenerAdapter {
                     build.append("\n");
                 }
             }
-            Messages.send(event, EmbedHelper.getEmbed(build.toString(), "Help"));
+            Messages.send(event, Embeds.getEmbed(build.toString(), "Help"));
         } else if(args.equals("help")){
             Messages.send(event, funnyHelpMessages.get(rand.nextInt(funnyHelpMessages.size())));
         } else {
             Optional<Command> command = list.tryGet(args);
             if(command.isPresent() && !command.get().hidden()){
-                Messages.send(event, EmbedHelper.getEmbed(formatHelp(command.get()), command.get().callName()));
+                Messages.send(event, Embeds.getEmbed(formatHelp(command.get()), command.get().callName()));
             } else {
                 Messages.send(event, "Command not found!");
             }
