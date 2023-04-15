@@ -59,6 +59,13 @@ public class Room {
 
     @Override
     public String toString() {
-        return name + ", " + location + (capacity == -1 ? "" : "(" + capacity + ")");
+        StringBuilder sb = new StringBuilder(name);
+        if (!location.equals("")) {
+            sb.append(", ").append(location);
+        }
+        if (capacity != -1) {
+            sb.append(" (").append(capacity).append(")");
+        }
+        return sb.toString();
     }
 }

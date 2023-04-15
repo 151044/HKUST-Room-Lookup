@@ -94,7 +94,7 @@ public class TimeRecord {
     }
     private static LocalDate toLocalDate(String time) {
         String[] array = time.split("-");
-        return LocalDate.of(Integer.parseInt(array[0]), toMonths(array[1]), Integer.parseInt(array[2]));
+        return LocalDate.of(Integer.parseInt(array[2]), toMonths(array[1]), Integer.parseInt(array[0]));
     }
 
     private static int toMonths(String str) {

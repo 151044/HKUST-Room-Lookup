@@ -52,13 +52,13 @@ public class CourseSection {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CourseSection courseSection = (CourseSection) o;
-        return Objects.equals(dept, courseSection.dept) && Objects.equals(code, courseSection.code);
+        CourseSection that = (CourseSection) o;
+        return Objects.equals(dept, that.dept) && Objects.equals(code, that.code) && Objects.equals(section, that.section);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dept, code);
+        return Objects.hash(dept, code, section);
     }
 
     @Override
