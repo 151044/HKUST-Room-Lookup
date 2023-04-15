@@ -1,11 +1,9 @@
 package com.s151044.discord.room;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -13,10 +11,10 @@ import java.util.stream.Collectors;
  * Contains information about name, location, capacity, and running classes.
  */
 public class Room {
-    private String name;
+    private final String name;
     private String location = ""; // Acad Concourse, etc. Can be empty (for cases such as LTD).
     private int capacity = -1; // Some rooms, like labs, may not have a capacity
-    private Map<TimeRecord, CourseSection> occupiedCourses = new HashMap<>();
+    private final Map<TimeRecord, CourseSection> occupiedCourses = new HashMap<>();
     public Room(String name, int capacity) {
         this.name = name;
         this.capacity = capacity;
@@ -39,9 +37,21 @@ public class Room {
         return occupiedCourses.entrySet().stream().filter(e -> !e.getKey().in(time))
                 .collect(Collectors.toList());
     }
-    public List<Map.Entry<TimeRecord, CourseSection>> timetable(LocalDate day) {
+    public Set<Map.Entry<TimeRecord, CourseSection>> timetable(LocalDate day) {
         return occupiedCourses.entrySet().stream().filter(e -> e.getKey().in(day))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Map.Entry<TimeRecord, CourseSection>> timetable() {
+        return occupiedCourses.entrySet();
+    }
+
+    public Set<DayOfWeek> occupiedDays() {
+        return occupiedCourses.keySet().stream().map(TimeRecord::getDays).flatMap(Collection::stream).collect(Collectors.toSet());
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

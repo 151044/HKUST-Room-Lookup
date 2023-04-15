@@ -12,7 +12,7 @@ public class TimeRecord {
     private static final LocalDate NONE = LocalDate.of(1000, 1, 1);
     private LocalDate beginDate = NONE; // can be empty, i.e. default value
     private LocalDate endDate = NONE;// can be empty, i.e. default value
-    private List<DayOfWeek> days;
+    private final List<DayOfWeek> days;
     private LocalTime beginTime;
     private LocalTime endTime;
 
@@ -92,6 +92,11 @@ public class TimeRecord {
         }
         return days.contains(date.getDayOfWeek());
     }
+
+    public List<DayOfWeek> getDays() {
+        return new ArrayList<>(days);
+    }
+
     private static LocalDate toLocalDate(String time) {
         String[] array = time.split("-");
         return LocalDate.of(Integer.parseInt(array[2]), toMonths(array[1]), Integer.parseInt(array[0]));
