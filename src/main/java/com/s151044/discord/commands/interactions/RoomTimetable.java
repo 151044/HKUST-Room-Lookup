@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 // TODO: Try out buttons later
 public class RoomTimetable implements SlashCommand {
-    private Map<String, DayOfWeek> weeks = new HashMap<>();
+    private final Map<String, DayOfWeek> weeks = new HashMap<>();
     private final List<Room> rooms;
 
     public RoomTimetable(List<Room> rooms) {

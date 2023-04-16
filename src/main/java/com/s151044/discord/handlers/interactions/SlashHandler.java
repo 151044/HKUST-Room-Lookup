@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class SlashHandler extends ListenerAdapter {
 
-    private SlashCommandList list;
+    private final SlashCommandList list;
 
     public SlashHandler(SlashCommandList list){
         this.list = list;

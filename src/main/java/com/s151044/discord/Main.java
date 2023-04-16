@@ -13,7 +13,6 @@ import com.s151044.discord.room.TimeRecord;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -220,24 +219,4 @@ public class Main {
         }
         return new TimeRecord(timeString);
     }
-
-    /*String longName = c.getElementsByTag("h2").get(0).text();
-                            String[] arr = longName.split(" ");
-                            String dept = arr[0];
-                            String code = arr[1];
-                            String name = longName.substring(longName.indexOf("-") + 1,longName.indexOf("("));
-                            Element secTable = c.getElementsByClass("sections").get(0);
-                            Elements trTag = secTable.getElementsByTag("tr");
-                            trTag.remove(0);
-                            for (int i = 0; i < trTag.size(); i++) {
-                                Element checkSpan = trTag.get(i).children().first();
-                                if(checkSpan.hasAttr("rowspan")){
-                                    int toSkip = Integer.parseInt(checkSpan.attr("rowspan"));
-                                    List<Element> subList = trTag.subList(i + 1, i + toSkip);
-                                    sections.add(new Section(trTag.get(i), subList));
-                                    i += toSkip - 1;
-                                } else {
-                                    sections.add(new Section(trTag.get(i)));
-                                }
-                            }*/
 }

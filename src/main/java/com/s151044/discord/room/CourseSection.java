@@ -6,10 +6,10 @@ import java.util.Objects;
  * Class representing the minimal amount of information for representing a course section.
  */
 public class CourseSection {
-    private String name;
-    private String dept;
-    private String code;
-    private String section;
+    private final String name;
+    private final String dept;
+    private final String code;
+    private final String section;
     private int units = 0;
 
     /**

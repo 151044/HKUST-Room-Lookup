@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SetupInteractions implements Command {
-    private static List<String> guildIds = new ArrayList<>();
-    private SlashCommandList slashList;
+    private static final List<String> guildIds = new ArrayList<>();
+    private final SlashCommandList slashList;
 
     public SetupInteractions(SlashCommandList slashList) {
         this.slashList = slashList;

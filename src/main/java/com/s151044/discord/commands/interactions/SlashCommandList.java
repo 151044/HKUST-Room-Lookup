@@ -6,7 +6,7 @@ import java.util.*;
  * A list of slash commands.
  */
 public class SlashCommandList {
-    private Map<String, SlashCommand> commandMap;
+    private final Map<String, SlashCommand> commandMap;
 
     /**
      * Constructs a new SlashCommandList.

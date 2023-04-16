@@ -7,11 +7,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Executor which imposes a minimum time limit before the next run of the task.
  */
 public class LimitedExecutor {
-    private long delay;
-    private TimeUnit timeUnit;
-    private Runnable task;
-    private ScheduledExecutorService exec;
-    private AtomicBoolean canExec = new AtomicBoolean(true);
+    private final long delay;
+    private final TimeUnit timeUnit;
+    private final Runnable task;
+    private final ScheduledExecutorService exec;
+    private final AtomicBoolean canExec = new AtomicBoolean(true);
     private ScheduledFuture<?> schedule;
 
     /**

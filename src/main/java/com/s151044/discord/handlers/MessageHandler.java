@@ -17,11 +17,11 @@ import java.util.Random;
  * A handler for guild messages.
  */
 public class MessageHandler extends ListenerAdapter {
-    private String prefix;
-    private CommandList list;
-    private List<String> funnyHelpMessages = List.of("No help is forthcoming.", "Helping yourself is the first step.",
+    private final String prefix;
+    private final CommandList list;
+    private final List<String> funnyHelpMessages = List.of("No help is forthcoming.", "Helping yourself is the first step.",
             "I'm also in need of assistance.", "Help! I'm drowning!", "Did you mean: Hell?");
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     /**
      * Constructs a new MessageHandler with the specified prefix to check for and the specified command list.

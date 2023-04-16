@@ -9,7 +9,6 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ListRooms implements SlashCommand {
     private final List<Room> rooms;

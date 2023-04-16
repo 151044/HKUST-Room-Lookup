@@ -6,8 +6,8 @@ import java.util.*;
  * A list of commands for a specific prefix.
  */
 public class CommandList {
-    private Map<String,Command> commandMap;
-    private Map<List<String>,String> aliasMap;
+    private final Map<String,Command> commandMap;
+    private final Map<List<String>,String> aliasMap;
     public CommandList() {
         commandMap = new HashMap<>();
         aliasMap = new HashMap<>();
@@ -23,7 +23,8 @@ public class CommandList {
             return Optional.of(commandMap.get(byName));
         }
         if(aliasMap.keySet().stream().flatMap(Collection::stream).anyMatch(str -> str.equals(byName))){
-            return Optional.of(commandMap.get(aliasMap.entrySet().stream().filter(ent -> ent.getKey().contains(byName)).findFirst().map(ent -> ent.getValue()).get()));
+            return Optional.of(commandMap.get(aliasMap.entrySet().stream().filter(ent -> ent.getKey().contains(byName))
+                    .findFirst().map(Map.Entry::getValue).get()));
         }else{
             return Optional.empty();
         }
