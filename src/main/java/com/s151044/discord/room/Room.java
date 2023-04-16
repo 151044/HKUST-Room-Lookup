@@ -54,6 +54,10 @@ public class Room {
         return name;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

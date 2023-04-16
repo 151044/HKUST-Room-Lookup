@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjuster;
+import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -81,19 +81,18 @@ public class RoomTimetable implements SlashCommand {
     @Override
     public void handleAutocomplete(CommandAutoCompleteInteractionEvent evt) {
         switch (evt.getFocusedOption().getName()) {
-            case "room":
+            case "room" -> {
                 String prefix = evt.getOption("room").getAsString();
                 evt.replyChoiceStrings(rooms.stream()
                         .map(Room::getName)
                         .filter(name -> name.startsWith(prefix)).limit(25).collect(Collectors.toList())).queue();
-                break;
-            case "weekday":
+            }
+            case "weekday" -> {
                 String day = evt.getOption("weekday").getAsString();
                 evt.replyChoiceStrings(weeks.keySet().stream().filter(k -> k.startsWith(day)).collect(Collectors.toList()))
                         .queue();
-                break;
-            default:
-                evt.replyChoices(List.of()).queue();
+            }
+            default -> evt.replyChoices(List.of()).queue();
         }
     }
 
@@ -105,11 +104,13 @@ public class RoomTimetable implements SlashCommand {
             adj = day.with(TemporalAdjusters.nextOrSame(week));
             Set<Map.Entry<TimeRecord, CourseSection>> timetable = room.timetable(adj);
             StringBuilder sb = new StringBuilder();
-            for (Map.Entry<TimeRecord, CourseSection> sec : timetable) {
+            for (Map.Entry<TimeRecord, CourseSection> sec : timetable.stream()
+                    .sorted(Map.Entry.comparingByKey()).toList()) {
                 sb.append("**").append(sec.getKey()).append("**: ").append(sec.getValue())
                         .append("\n");
             }
-            timetables.put(adj + "(" + adj.getDayOfWeek() + ")", sb.toString());
+            timetables.put(adj + " (" + adj.getDayOfWeek()
+                    .getDisplayName(TextStyle.FULL, Locale.getDefault())+ ")", sb.toString());
         }
         return timetables;
     }
@@ -117,11 +118,13 @@ public class RoomTimetable implements SlashCommand {
         Map<String, String> timetables = new HashMap<>();
         Set<Map.Entry<TimeRecord, CourseSection>> timetable = room.timetable(week);
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<TimeRecord, CourseSection> sec : timetable) {
+        for (Map.Entry<TimeRecord, CourseSection> sec : timetable.stream()
+                .sorted(Map.Entry.comparingByKey()).toList()) {
             sb.append("**").append(sec.getKey()).append("**: ").append(sec.getValue())
                     .append("\n");
         }
-        timetables.put(week.toString() + "(" + week.getDayOfWeek() + ")", sb.toString());
+        timetables.put(week.toString() + " (" + week.getDayOfWeek()
+                .getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")", sb.toString());
         return timetables;
     }
 }

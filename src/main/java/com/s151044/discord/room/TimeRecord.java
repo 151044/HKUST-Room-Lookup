@@ -1,14 +1,17 @@
 package com.s151044.discord.room;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Class representing a "time record" for a specific period of time.
  * Can be scheduled weekly, or within a specific period of time.
  */
-public class TimeRecord {
+public class TimeRecord implements Comparable<TimeRecord> {
     private static final LocalDate NONE = LocalDate.of(1000, 1, 1);
     private LocalDate beginDate = NONE; // can be empty, i.e. default value
     private LocalDate endDate = NONE;// can be empty, i.e. default value
@@ -152,5 +155,12 @@ public class TimeRecord {
         sb.append(" ");
         sb.append(beginTime).append(" - ").append(endTime);
         return sb.toString();
+    }
+
+    @Override
+    public int compareTo(@NotNull TimeRecord timeRecord) {
+        // Note: this compareTo only takes into account the time, not the date
+        return Comparator.comparing((TimeRecord rec) -> rec.beginTime).thenComparing((TimeRecord rec) -> rec.endTime)
+                .compare(this, timeRecord);
     }
 }
