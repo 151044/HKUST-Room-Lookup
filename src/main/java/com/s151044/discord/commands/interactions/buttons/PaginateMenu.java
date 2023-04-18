@@ -11,6 +11,9 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Creates a menu in Discord which can show strings by pages.
+ */
 public class PaginateMenu implements ButtonCommand {
     private final List<String> embeds;
     private final List<String> titles;
@@ -20,6 +23,12 @@ public class PaginateMenu implements ButtonCommand {
     private int pos = 0;
     private int id;
 
+    /**
+     * Constructs a new PaginateMenu.
+     * @param messages The messages to show (i.e. the main content)
+     * @param titles The titles of each message (should match the number of messages)
+     * @param event The slash command interaction event to respond to
+     */
     public PaginateMenu(List<String> messages, List<String> titles, SlashCommandInteractionEvent event) {
         this.embeds = messages;
         this.titles = titles;
@@ -31,10 +40,20 @@ public class PaginateMenu implements ButtonCommand {
         id = ButtonHandler.allocateId();
     }
 
+    /**
+     * Constructs a new PaginateMenu.
+     * @param messages The messages to show (i.e. the main content)
+     * @param title The title for each page of the menu
+     * @param event The slash command interaction event to respond to
+     */
     public PaginateMenu(List<String> messages, String title, SlashCommandInteractionEvent event) {
         this(messages, Collections.nCopies(messages.size(), title), event);
     }
 
+    /**
+     * Shows the menu with the first page.
+     * Do not acknowledge the event before calling this method.
+     */
     public void showMenu() {
         if (embeds.size() == 0) {
             throw new IllegalStateException("Empty embeds list?");
