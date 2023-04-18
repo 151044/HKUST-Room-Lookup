@@ -1,6 +1,8 @@
 package com.s151044.discord.commands.interactions;
 
 import com.s151044.discord.Embeds;
+import com.s151044.discord.commands.interactions.buttons.PaginateMenu;
+import com.s151044.discord.handlers.interactions.ButtonHandler;
 import com.s151044.discord.room.Room;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -12,9 +14,11 @@ import java.util.List;
 
 public class ListRooms implements SlashCommand {
     private final List<Room> rooms;
+    private final ButtonHandler handler;
 
-    public ListRooms(List<Room> rooms) {
+    public ListRooms(List<Room> rooms, ButtonHandler handler) {
         this.rooms = rooms;
+        this.handler = handler;
     }
     @Override
     public void action(SlashCommandInteractionEvent evt) {
@@ -26,14 +30,16 @@ public class ListRooms implements SlashCommand {
             if (toSend.isEmpty()) {
                 evt.reply("Cannot find supported rooms for " + area + "!").queue();
             } else {
-                evt.replyEmbeds(Embeds.getLongEmbed(String.join("\n", toSend), "Rooms found near " + area + ":")).queue();
+                PaginateMenu menu = new PaginateMenu(PaginateMenu.splitEntries(rooms, 10, Room::toString),
+                        "Rooms found near " + area + ":", evt);
+                menu.showMenu();
+                handler.addCommand(menu);
             }
         } else {
-            StringBuilder sb = new StringBuilder();
-            for (Room r : rooms) {
-                sb.append(r.getName()).append("\n");
-            }
-            evt.replyEmbeds(Embeds.getLongEmbed(sb.toString(), "Rooms supported:")).queue();
+            PaginateMenu menu = new PaginateMenu(PaginateMenu.splitEntries(rooms, 10, Room::toString),
+                    "Rooms supported:", evt);
+            menu.showMenu();
+            handler.addCommand(menu);
         }
     }
 

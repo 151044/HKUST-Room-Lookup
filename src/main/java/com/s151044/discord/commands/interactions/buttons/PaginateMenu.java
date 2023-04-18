@@ -8,8 +8,10 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Creates a menu in Discord which can show strings by pages.
@@ -58,7 +60,7 @@ public class PaginateMenu implements ButtonCommand {
         if (embeds.size() == 0) {
             throw new IllegalStateException("Empty embeds list?");
         }
-        String pageString = String.format("**Page %d of %d**", 1, embeds.size());
+        String pageString = String.format("\n**Page %d of %d**", 1, embeds.size());
         String title = titles.get(0);
         MessageEmbed emb = Embeds.getEmbed(embeds.get(0) + pageString, title);
         event.replyEmbeds(emb)
@@ -91,5 +93,21 @@ public class PaginateMenu implements ButtonCommand {
     @Override
     public String prefix() {
         return "Menu_" + id;
+    }
+
+    public static <T> List<String> splitEntries(List<T> list, int limit, Function<T, String> mapper) {
+        int index = 0;
+        List<String> answers = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        for (T t : list) {
+            if (index != 0 && index % limit == 0) {
+                answers.add(sb.toString());
+                sb = new StringBuilder();
+            }
+            sb.append(mapper.apply(t)).append("\n");
+            index++;
+        }
+        answers.add(sb.toString());
+        return answers;
     }
 }

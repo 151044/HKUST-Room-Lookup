@@ -74,19 +74,7 @@ public class FindRoom implements SlashCommand {
         }
         LocalDateTime dateTime = LocalDateTime.of(lookupDate, time);
         List<Room> matched = list.stream().filter(r -> !r.isBlockedAt(dateTime)).toList();
-        List<String> embed = new ArrayList<>();
-        StringBuilder builder = new StringBuilder();
-        int index = 0;
-        for (Room r : matched) {
-            if (index != 0 && index % 10 == 0) {
-                embed.add(builder.toString());
-                builder = new StringBuilder();
-            }
-            builder.append(r.toString());
-            builder.append("\n");
-            index++;
-        }
-        embed.add(builder.toString());
+        List<String> embed = PaginateMenu.splitEntries(matched, 10, Room::toString);
         PaginateMenu menu = new PaginateMenu(embed,
                 "Rooms available for " + lookupDate + " at " + time.truncatedTo(ChronoUnit.SECONDS) + ":", evt);
         handler.addCommand(menu);
