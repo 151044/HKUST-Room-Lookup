@@ -15,7 +15,6 @@ public class PaginateMenu implements ButtonCommand {
     private final List<String> embeds;
     private final List<String> titles;
     private final SlashCommandInteractionEvent event;
-    private final int embedSize;
     private final Button nextButton;
     private final Button prevButton;
     private int pos = 0;
@@ -25,10 +24,9 @@ public class PaginateMenu implements ButtonCommand {
         this.embeds = messages;
         this.titles = titles;
         this.event = event;
-        this.embedSize = messages.size();
-        this.nextButton = Button.secondary("Menu-" + id + "-" + "next", "Next Page")
+        this.nextButton = Button.secondary("Menu_" + id + "-" + "next", "Next Page")
                 .withEmoji(Emoji.fromFormatted("➡️"));
-        this.prevButton = Button.secondary("Menu-" + id + "-" + "prev", "Prev Page")
+        this.prevButton = Button.secondary("Menu_" + id + "-" + "prev", "Prev Page")
                 .withEmoji(Emoji.fromFormatted("⬅️"));
         id = ButtonHandler.allocateId();
     }
@@ -73,6 +71,6 @@ public class PaginateMenu implements ButtonCommand {
 
     @Override
     public String prefix() {
-        return "Menu-" + id;
+        return "Menu_" + id;
     }
 }
