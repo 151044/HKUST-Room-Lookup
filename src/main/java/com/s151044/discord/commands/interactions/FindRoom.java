@@ -17,10 +17,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,7 +74,10 @@ public class FindRoom implements SlashCommand {
         List<Room> matched = list.stream().filter(r -> !r.isBlockedAt(dateTime)).toList();
         List<String> embed = PaginateMenu.splitEntries(matched, 10, Room::toString);
         PaginateMenu menu = new PaginateMenu(embed,
-                "Rooms available for " + lookupDate + " at " + time.truncatedTo(ChronoUnit.SECONDS) + ":", evt);
+                "Rooms available" +
+                        (areaMapping != null ? " near " + areaMapping.getAsString() : "")
+                        + " for " + lookupDate + " at "
+                        + time.truncatedTo(ChronoUnit.SECONDS) + ":", evt);
         handler.addCommand(menu);
         menu.showMenu();
 
@@ -104,12 +105,15 @@ public class FindRoom implements SlashCommand {
         String prefix = evt.getFocusedOption().getValue();
         switch (name) {
             case "area" -> evt.replyChoiceStrings(
-                    rooms.stream().filter(r -> r.getLocation().startsWith(prefix)).map(Room::getLocation)
+                    rooms.stream().map(Room::getLocation).filter(location -> location.startsWith(prefix))
+                            .filter(s -> !s.isEmpty())
                             .limit(25)
                             .collect(Collectors.toList())).queue();
             case "weekday" -> evt.replyChoiceStrings(
                     TimeRecord.getWeekdays().keySet()
-                            .stream().filter(s -> s.startsWith(prefix)).limit(25)
+                            .stream().filter(s -> s.startsWith(prefix))
+                            .filter(s -> !s.isEmpty())
+                            .limit(25)
                             .collect(Collectors.toList())).queue();
             default -> {}
         }

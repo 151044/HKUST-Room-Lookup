@@ -35,11 +35,11 @@ public class PaginateMenu implements ButtonCommand {
         this.embeds = messages;
         this.titles = titles;
         this.event = event;
+        id = ButtonHandler.allocateId();
         this.nextButton = Button.secondary("Menu_" + id + "-" + "next", "Next Page")
                 .withEmoji(Emoji.fromFormatted("➡️"));
         this.prevButton = Button.secondary("Menu_" + id + "-" + "prev", "Prev Page")
                 .withEmoji(Emoji.fromFormatted("⬅️"));
-        id = ButtonHandler.allocateId();
     }
 
     /**

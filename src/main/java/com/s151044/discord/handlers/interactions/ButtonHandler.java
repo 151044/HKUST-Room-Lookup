@@ -37,7 +37,7 @@ public class ButtonHandler extends ListenerAdapter {
     public boolean hasPrefix(String prefix) {
         return prefixes.contains(prefix);
     }
-    public static int allocateId() {
+    public static synchronized int allocateId() {
         return atomic.getAndIncrement();
     }
 }
