@@ -23,7 +23,7 @@ public class PaginateMenu implements ButtonCommand {
     private final Button nextButton;
     private final Button prevButton;
     private int pos = 0;
-    private int id;
+    private final int id;
 
     /**
      * Constructs a new PaginateMenu.

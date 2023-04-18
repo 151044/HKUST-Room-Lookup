@@ -44,8 +44,8 @@ public class Embeds {
         while (desc.length() > 1980) {
             String copy;
             if(!(hasNewlines || hasSpace)) {
-                copy = desc.substring(0, desc.lastIndexOf(hasNewlines ? "\n" : " ", 1960));
-                desc = desc.substring(desc.lastIndexOf(hasNewlines ? "\n" : " ", 1960) + 1);
+                copy = desc.substring(0, desc.lastIndexOf(" ", 1960));
+                desc = desc.substring(desc.lastIndexOf(" ", 1960) + 1);
             } else {
                 copy = desc.substring(0, 1960);
                 desc = desc.substring(1960 + 1);

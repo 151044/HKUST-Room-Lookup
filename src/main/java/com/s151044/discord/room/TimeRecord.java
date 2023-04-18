@@ -2,13 +2,16 @@ package com.s151044.discord.room;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
  * Class representing a "time record" for a specific period of time.
  * Can be scheduled weekly, or within a specific period of time.
- *
+ * <p>
  * Note: Do NOT compare TimeRecords with .equals().
  * It is deliberately not overridden in order to preserve correct behaviour in Room.
  * i.e. Each TimeRecord is unique even if they represent the same time.

@@ -1,6 +1,5 @@
 package com.s151044.discord.commands.interactions;
 
-import com.s151044.discord.Embeds;
 import com.s151044.discord.commands.interactions.buttons.PaginateMenu;
 import com.s151044.discord.handlers.interactions.ButtonHandler;
 import com.s151044.discord.room.Room;
@@ -23,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FindRoom implements SlashCommand {
-    private List<Room> rooms;
+    private final List<Room> rooms;
     private final ButtonHandler handler;
 
     public FindRoom(List<Room> rooms, ButtonHandler handler) {
@@ -80,10 +79,6 @@ public class FindRoom implements SlashCommand {
                         + time.truncatedTo(ChronoUnit.SECONDS) + ":", evt);
         handler.addCommand(menu);
         menu.showMenu();
-
-        /*hook.sendMessageEmbeds(Embeds.getLongEmbed(
-                matched.stream().map(Room::toString).collect(Collectors.joining("\n")),
-                "Rooms available for " + lookupDate + " at " + time.truncatedTo(ChronoUnit.SECONDS) + ":")).queue();*/
     }
 
     @Override

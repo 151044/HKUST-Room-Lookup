@@ -1,6 +1,8 @@
 package com.s151044.discord;
 
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.RichCustomEmoji;
@@ -35,8 +37,8 @@ public class Messages {
         while (msg.length() > 1980) {
             String copy;
             if(!(hasNewlines || hasSpace)) {
-                copy = msg.substring(0, msg.lastIndexOf(hasNewlines ? "\n" : " ", 1960));
-                msg = msg.substring(msg.lastIndexOf(hasNewlines ? "\n" : " ", 1960) + 1);
+                copy = msg.substring(0, msg.lastIndexOf(" ", 1960));
+                msg = msg.substring(msg.lastIndexOf(" ", 1960) + 1);
             } else {
                 copy = msg.substring(0, 1960);
                 msg = msg.substring(1960 + 1);

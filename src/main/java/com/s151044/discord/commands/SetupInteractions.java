@@ -1,9 +1,8 @@
 package com.s151044.discord.commands;
 
 import com.s151044.discord.Messages;
-import com.s151044.discord.commands.interactions.SlashCommandList;
 import com.s151044.discord.commands.interactions.SlashCommand;
-
+import com.s151044.discord.commands.interactions.SlashCommandList;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 

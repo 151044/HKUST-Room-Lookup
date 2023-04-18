@@ -10,9 +10,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ButtonHandler extends ListenerAdapter {
-    private List<ButtonCommand> commands = new ArrayList<>();
-    private List<String> prefixes = new ArrayList<>();
-    private static AtomicInteger atomic = new AtomicInteger(0);
+    private final List<ButtonCommand> commands = new ArrayList<>();
+    private final List<String> prefixes = new ArrayList<>();
+    private static final AtomicInteger atomic = new AtomicInteger(0);
     public void addCommand(ButtonCommand cmd) {
         if (prefixes.contains(cmd.prefix())) {
             throw new IllegalArgumentException("Duplicate prefix" + prefixes);

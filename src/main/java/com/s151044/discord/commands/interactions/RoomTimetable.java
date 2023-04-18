@@ -1,9 +1,7 @@
 package com.s151044.discord.commands.interactions;
 
-import com.s151044.discord.Embeds;
 import com.s151044.discord.commands.interactions.buttons.PaginateMenu;
 import com.s151044.discord.handlers.interactions.ButtonHandler;
-import com.s151044.discord.room.CourseSection;
 import com.s151044.discord.room.Room;
 import com.s151044.discord.room.TimeRecord;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
@@ -16,13 +14,13 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-// TODO: Try out buttons later
 public class RoomTimetable implements SlashCommand {
     private final List<Room> rooms;
     private final ButtonHandler handler;
