@@ -56,7 +56,7 @@ public class Main {
 
             commandList.addCommand(new SetupInteractions(slashList));
 
-            slashList.addCommand(new RoomTimetable(rooms));
+            slashList.addCommand(new RoomTimetable(rooms, buttonHandler));
             slashList.addCommand(new ListRooms(rooms, buttonHandler));
             slashList.addCommand(new FindRoom(rooms, buttonHandler));
 

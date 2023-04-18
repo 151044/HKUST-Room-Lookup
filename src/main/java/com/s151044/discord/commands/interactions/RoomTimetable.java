@@ -1,6 +1,8 @@
 package com.s151044.discord.commands.interactions;
 
 import com.s151044.discord.Embeds;
+import com.s151044.discord.commands.interactions.buttons.PaginateMenu;
+import com.s151044.discord.handlers.interactions.ButtonHandler;
 import com.s151044.discord.room.CourseSection;
 import com.s151044.discord.room.Room;
 import com.s151044.discord.room.TimeRecord;
@@ -17,19 +19,22 @@ import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 // TODO: Try out buttons later
 public class RoomTimetable implements SlashCommand {
     private final List<Room> rooms;
+    private final ButtonHandler handler;
 
-    public RoomTimetable(List<Room> rooms) {
+    public RoomTimetable(List<Room> rooms, ButtonHandler handler) {
         this.rooms = rooms;
+        this.handler = handler;
     }
     @Override
     public void action(SlashCommandInteractionEvent evt) {
         InteractionHook hook = evt.getHook();
-        evt.deferReply().queue();
+        //evt.deferReply().queue();
         String roomStr = evt.getOption("room").getAsString();
         Optional<Room> roomOpt = rooms.stream().filter(r -> r.getName().equals(roomStr)).findFirst();
         if (roomOpt.isEmpty()) {
@@ -50,12 +55,17 @@ public class RoomTimetable implements SlashCommand {
         } else {
             toOutput = Room.prettyFormat(room);
         }
+        List<String> keys = new ArrayList<>();
+        List<String> vals = new ArrayList<>();
         for (Map.Entry<String, String> entry : toOutput.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey()).toList()) {
-            hook.sendMessageEmbeds(Embeds.getEmbed(entry.getValue(), "Room Occupation for " + entry.getKey()))
-                    .queue();
+            keys.add("Room occupation for " + entry.getKey());
+            vals.add(entry.getValue());
         }
-
+        //vals = PaginateMenu.splitEntries(vals, 10, Function.identity());
+        PaginateMenu menu = new PaginateMenu(vals, keys, evt);
+        menu.showMenu();
+        handler.addCommand(menu);
     }
 
     @Override

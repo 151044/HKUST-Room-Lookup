@@ -99,7 +99,7 @@ public class Room {
             StringBuilder sb = new StringBuilder();
             for (Map.Entry<TimeRecord, CourseSection> sec : timetable.stream()
                     .sorted(Map.Entry.comparingByKey()).toList()) {
-                sb.append("**").append(sec.getKey()).append("**: ").append(sec.getValue())
+                sb.append("**").append(sec.getKey().getTimes()).append("**: ").append(sec.getValue())
                         .append("\n");
             }
             timetables.put(adj + " (" + adj.getDayOfWeek()
@@ -113,7 +113,7 @@ public class Room {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<TimeRecord, CourseSection> sec : timetable.stream()
                 .sorted(Map.Entry.comparingByKey()).toList()) {
-            sb.append("**").append(sec.getKey()).append("**: ").append(sec.getValue())
+            sb.append("**").append(sec.getKey().getTimes()).append("**: ").append(sec.getValue())
                     .append("\n");
         }
         timetables.put(week.toString() + " (" + week.getDayOfWeek()

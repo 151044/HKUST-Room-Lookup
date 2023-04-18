@@ -162,6 +162,9 @@ public class TimeRecord implements Comparable<TimeRecord> {
         FULL_DATES.put("Sunday", DayOfWeek.SUNDAY);
     }
 
+    public String getTimes() {
+        return beginTime + " - " + endTime;
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
