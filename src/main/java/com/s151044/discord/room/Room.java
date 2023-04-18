@@ -3,6 +3,8 @@ package com.s151044.discord.room;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.TextStyle;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,6 +52,10 @@ public class Room {
         return occupiedCourses.keySet().stream().map(TimeRecord::getDays).flatMap(Collection::stream).collect(Collectors.toSet());
     }
 
+    public boolean isBlockedAt(LocalDateTime dateTime) {
+        return occupiedCourses.keySet().stream().anyMatch(record -> record.in(dateTime));
+    }
+
     public String getName() {
         return name;
     }
@@ -81,5 +87,37 @@ public class Room {
             sb.append(" (").append(capacity).append(")");
         }
         return sb.toString();
+    }
+
+    public static Map<String, String> prettyFormat(Room room) {
+        Map<String, String> timetables = new HashMap<>();
+        LocalDate day = LocalDate.now();
+        LocalDate adj;
+        for (DayOfWeek week : room.occupiedDays()) {
+            adj = day.with(TemporalAdjusters.nextOrSame(week));
+            Set<Map.Entry<TimeRecord, CourseSection>> timetable = room.timetable(adj);
+            StringBuilder sb = new StringBuilder();
+            for (Map.Entry<TimeRecord, CourseSection> sec : timetable.stream()
+                    .sorted(Map.Entry.comparingByKey()).toList()) {
+                sb.append("**").append(sec.getKey()).append("**: ").append(sec.getValue())
+                        .append("\n");
+            }
+            timetables.put(adj + " (" + adj.getDayOfWeek()
+                    .getDisplayName(TextStyle.FULL, Locale.getDefault())+ ")", sb.toString());
+        }
+        return timetables;
+    }
+    public static Map<String, String> prettyFormat(Room room, LocalDate week) {
+        Map<String, String> timetables = new HashMap<>();
+        Set<Map.Entry<TimeRecord, CourseSection>> timetable = room.timetable(week);
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<TimeRecord, CourseSection> sec : timetable.stream()
+                .sorted(Map.Entry.comparingByKey()).toList()) {
+            sb.append("**").append(sec.getKey()).append("**: ").append(sec.getValue())
+                    .append("\n");
+        }
+        timetables.put(week.toString() + " (" + week.getDayOfWeek()
+                .getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")", sb.toString());
+        return timetables;
     }
 }

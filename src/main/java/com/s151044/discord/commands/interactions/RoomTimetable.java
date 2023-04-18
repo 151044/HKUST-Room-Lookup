@@ -21,19 +21,10 @@ import java.util.stream.Collectors;
 
 // TODO: Try out buttons later
 public class RoomTimetable implements SlashCommand {
-    private final Map<String, DayOfWeek> weeks = new HashMap<>();
     private final List<Room> rooms;
 
     public RoomTimetable(List<Room> rooms) {
         this.rooms = rooms;
-        // more nonsense
-        weeks.put("Monday", DayOfWeek.MONDAY);
-        weeks.put("Tuesday", DayOfWeek.TUESDAY);
-        weeks.put("Wednesday", DayOfWeek.WEDNESDAY);
-        weeks.put("Thursday", DayOfWeek.THURSDAY);
-        weeks.put("Friday", DayOfWeek.FRIDAY);
-        weeks.put("Saturday", DayOfWeek.SATURDAY);
-        weeks.put("Sunday", DayOfWeek.SUNDAY);
     }
     @Override
     public void action(SlashCommandInteractionEvent evt) {
@@ -49,21 +40,22 @@ public class RoomTimetable implements SlashCommand {
         OptionMapping weekdayOpt = evt.getOption("weekday");
         Map<String, String> toOutput;
         if (weekdayOpt != null) {
-            DayOfWeek week = weeks.getOrDefault(weekdayOpt.getAsString(), null);
+            DayOfWeek week = TimeRecord.getWeekdays().getOrDefault(weekdayOpt.getAsString(), null);
             if (week == null) {
                 hook.sendMessage("Cannot find weekday " + weekdayOpt).queue();
                 return;
             }
             LocalDate date = LocalDate.now().with(TemporalAdjusters.next(week));
-            toOutput = prettyFormat(room, date);
+            toOutput = Room.prettyFormat(room, date);
         } else {
-            toOutput = prettyFormat(room);
+            toOutput = Room.prettyFormat(room);
         }
         for (Map.Entry<String, String> entry : toOutput.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey()).toList()) {
             hook.sendMessageEmbeds(Embeds.getEmbed(entry.getValue(), "Room Occupation for " + entry.getKey()))
                     .queue();
         }
+
     }
 
     @Override
@@ -89,42 +81,10 @@ public class RoomTimetable implements SlashCommand {
             }
             case "weekday" -> {
                 String day = evt.getOption("weekday").getAsString();
-                evt.replyChoiceStrings(weeks.keySet().stream().filter(k -> k.startsWith(day)).collect(Collectors.toList()))
+                evt.replyChoiceStrings(TimeRecord.getWeekdays().keySet().stream().filter(k -> k.startsWith(day)).collect(Collectors.toList()))
                         .queue();
             }
             default -> evt.replyChoices(List.of()).queue();
         }
-    }
-
-    private static Map<String, String> prettyFormat(Room room) {
-        Map<String, String> timetables = new HashMap<>();
-        LocalDate day = LocalDate.now();
-        LocalDate adj;
-        for (DayOfWeek week : room.occupiedDays()) {
-            adj = day.with(TemporalAdjusters.nextOrSame(week));
-            Set<Map.Entry<TimeRecord, CourseSection>> timetable = room.timetable(adj);
-            StringBuilder sb = new StringBuilder();
-            for (Map.Entry<TimeRecord, CourseSection> sec : timetable.stream()
-                    .sorted(Map.Entry.comparingByKey()).toList()) {
-                sb.append("**").append(sec.getKey()).append("**: ").append(sec.getValue())
-                        .append("\n");
-            }
-            timetables.put(adj + " (" + adj.getDayOfWeek()
-                    .getDisplayName(TextStyle.FULL, Locale.getDefault())+ ")", sb.toString());
-        }
-        return timetables;
-    }
-    private static Map<String, String> prettyFormat(Room room, LocalDate week) {
-        Map<String, String> timetables = new HashMap<>();
-        Set<Map.Entry<TimeRecord, CourseSection>> timetable = room.timetable(week);
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<TimeRecord, CourseSection> sec : timetable.stream()
-                .sorted(Map.Entry.comparingByKey()).toList()) {
-            sb.append("**").append(sec.getKey()).append("**: ").append(sec.getValue())
-                    .append("\n");
-        }
-        timetables.put(week.toString() + " (" + week.getDayOfWeek()
-                .getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")", sb.toString());
-        return timetables;
     }
 }

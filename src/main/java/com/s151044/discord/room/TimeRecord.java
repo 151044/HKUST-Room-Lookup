@@ -3,21 +3,28 @@ package com.s151044.discord.room;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class representing a "time record" for a specific period of time.
  * Can be scheduled weekly, or within a specific period of time.
+ *
+ * Note: Do NOT compare TimeRecords with .equals().
+ * It is deliberately not overridden in order to preserve correct behaviour in Room.
+ * i.e. Each TimeRecord is unique even if they represent the same time.
  */
 public class TimeRecord implements Comparable<TimeRecord> {
     private static final LocalDate NONE = LocalDate.of(1000, 1, 1);
+    private static final Map<String, DayOfWeek> FULL_DATES = new HashMap<>();
     private LocalDate beginDate = NONE; // can be empty, i.e. default value
     private LocalDate endDate = NONE;// can be empty, i.e. default value
     private final List<DayOfWeek> days;
     private LocalTime beginTime;
     private LocalTime endTime;
+
+    static {
+        initDays();
+    }
 
     /**
      * Initializes a TimeRecord with the specified starting and ending dates.
@@ -145,6 +152,16 @@ public class TimeRecord implements Comparable<TimeRecord> {
         return weeks;
     }
 
+    private static void initDays() {
+        FULL_DATES.put("Monday", DayOfWeek.MONDAY);
+        FULL_DATES.put("Tuesday", DayOfWeek.TUESDAY);
+        FULL_DATES.put("Wednesday", DayOfWeek.WEDNESDAY);
+        FULL_DATES.put("Thursday", DayOfWeek.THURSDAY);
+        FULL_DATES.put("Friday", DayOfWeek.FRIDAY);
+        FULL_DATES.put("Saturday", DayOfWeek.SATURDAY);
+        FULL_DATES.put("Sunday", DayOfWeek.SUNDAY);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -162,5 +179,13 @@ public class TimeRecord implements Comparable<TimeRecord> {
         // Note: this compareTo only takes into account the time, not the date
         return Comparator.comparing((TimeRecord rec) -> rec.beginTime).thenComparing((TimeRecord rec) -> rec.endTime)
                 .compare(this, timeRecord);
+    }
+
+    public static DayOfWeek getWeekday(String longName) {
+        return FULL_DATES.get(longName);
+    }
+
+    public static Map<String, DayOfWeek> getWeekdays() {
+        return new HashMap<>(FULL_DATES);
     }
 }

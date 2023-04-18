@@ -2,10 +2,12 @@ package com.s151044.discord;
 
 import com.s151044.discord.commands.CommandList;
 import com.s151044.discord.commands.SetupInteractions;
+import com.s151044.discord.commands.interactions.FindRoom;
 import com.s151044.discord.commands.interactions.ListRooms;
 import com.s151044.discord.commands.interactions.RoomTimetable;
 import com.s151044.discord.commands.interactions.SlashCommandList;
 import com.s151044.discord.handlers.MessageHandler;
+import com.s151044.discord.handlers.interactions.ButtonHandler;
 import com.s151044.discord.handlers.interactions.SlashHandler;
 import com.s151044.discord.room.CourseSection;
 import com.s151044.discord.room.Room;
@@ -50,17 +52,20 @@ public class Main {
 
             CommandList commandList = new CommandList();
             SlashCommandList slashList = new SlashCommandList();
+            ButtonHandler buttonHandler = new ButtonHandler();
 
             commandList.addCommand(new SetupInteractions(slashList));
 
             slashList.addCommand(new RoomTimetable(rooms));
             slashList.addCommand(new ListRooms(rooms));
+            slashList.addCommand(new FindRoom(rooms, buttonHandler));
 
             jda = JDABuilder.createDefault(System.getenv("BOT_TOKEN"))
                     .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                     .addEventListeners(
                             new MessageHandler("&", commandList),
-                            new SlashHandler(slashList))
+                            new SlashHandler(slashList),
+                            buttonHandler)
                     .build();
             jda.awaitReady();
         }
