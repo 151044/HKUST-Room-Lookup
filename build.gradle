@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'com.s151044'
@@ -29,3 +30,10 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+
+
+application {
+    mainClass = 'com.s151044.discord.Main'
+}
+
