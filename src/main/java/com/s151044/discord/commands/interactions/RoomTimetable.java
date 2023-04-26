@@ -48,7 +48,7 @@ public class RoomTimetable implements SlashCommand {
                 hook.sendMessage("Cannot find weekday " + weekdayOpt).queue();
                 return;
             }
-            LocalDate date = LocalDate.now().with(TemporalAdjusters.next(week));
+            LocalDate date = LocalDate.now().with(TemporalAdjusters.nextOrSame(week));
             toOutput = Room.prettyFormat(room, date);
         } else {
             toOutput = Room.prettyFormat(room);
