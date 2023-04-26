@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'application'
 }
 
 group 'com.s151044'
@@ -26,14 +25,20 @@ dependencies {
     }
     implementation 'org.jsoup:jsoup:1.15.4'
 }
-
-test {
-    useJUnitPlatform()
+tasks.register('dist', Jar) {
+    manifest {
+        attributes 'Main-Class': "com.s151044.discord.Main"
+    }
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    with jar
 }
 
 
-
-application {
-    mainClass = 'com.s151044.discord.Main'
+test {
+    useJUnitPlatform()
 }
 
