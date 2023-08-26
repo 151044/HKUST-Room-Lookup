@@ -1,6 +1,6 @@
 package com.s151044.discord.commands.interactions.buttons;
 
-import com.s151044.discord.Embeds;
+import com.s151044.discord.utils.Embeds;
 import com.s151044.discord.handlers.interactions.ButtonHandler;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;

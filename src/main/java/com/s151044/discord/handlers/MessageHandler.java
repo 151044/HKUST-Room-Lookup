@@ -1,7 +1,7 @@
 package com.s151044.discord.handlers;
 
-import com.s151044.discord.Embeds;
-import com.s151044.discord.Messages;
+import com.s151044.discord.utils.Embeds;
+import com.s151044.discord.utils.Messages;
 import com.s151044.discord.commands.Command;
 import com.s151044.discord.commands.CommandList;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

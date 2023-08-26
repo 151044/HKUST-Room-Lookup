@@ -23,7 +23,9 @@ dependencies {
     implementation('net.dv8tion:JDA:5.0.0-beta.3') {
         exclude module: 'opus-java'
     }
-    implementation 'org.jsoup:jsoup:1.15.4'
+    // https://mvnrepository.com/artifact/org.jsoup/jsoup
+    implementation 'org.jsoup:jsoup:1.16.1'
+
 }
 tasks.register('dist', Jar) {
     manifest {

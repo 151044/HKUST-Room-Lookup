@@ -2,9 +2,9 @@ package com.s151044.discord;
 
 import com.s151044.discord.commands.CommandList;
 import com.s151044.discord.commands.SetupInteractions;
-import com.s151044.discord.commands.interactions.FindRoom;
-import com.s151044.discord.commands.interactions.ListRooms;
-import com.s151044.discord.commands.interactions.RoomTimetable;
+import com.s151044.discord.room.interactions.FindRoom;
+import com.s151044.discord.room.interactions.ListRooms;
+import com.s151044.discord.room.interactions.RoomTimetable;
 import com.s151044.discord.commands.interactions.SlashCommandList;
 import com.s151044.discord.handlers.MessageHandler;
 import com.s151044.discord.handlers.interactions.ButtonHandler;

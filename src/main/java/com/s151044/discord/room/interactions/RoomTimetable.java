@@ -1,5 +1,6 @@
-package com.s151044.discord.commands.interactions;
+package com.s151044.discord.room.interactions;
 
+import com.s151044.discord.commands.interactions.SlashCommand;
 import com.s151044.discord.commands.interactions.buttons.PaginateMenu;
 import com.s151044.discord.handlers.interactions.ButtonHandler;
 import com.s151044.discord.room.Room;

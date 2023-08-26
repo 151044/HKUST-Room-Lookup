@@ -1,4 +1,4 @@
-package com.s151044.discord;
+package com.s151044.discord.utils;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
