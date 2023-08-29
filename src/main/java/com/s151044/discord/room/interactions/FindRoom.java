@@ -33,7 +33,7 @@ public class FindRoom implements SlashCommand {
 
     @Override
     public void action(SlashCommandInteractionEvent evt) {
-        //evt.deferReply().queue();
+        evt.deferReply().queue();
         InteractionHook hook = evt.getHook();
         List<Room> list = rooms;
         OptionMapping areaMapping = evt.getOption("area");
@@ -77,7 +77,7 @@ public class FindRoom implements SlashCommand {
                 "Rooms available" +
                         (areaMapping != null ? " near " + areaMapping.getAsString() : "")
                         + " for " + lookupDate + " at "
-                        + time.truncatedTo(ChronoUnit.SECONDS) + ":", evt);
+                        + time.truncatedTo(ChronoUnit.SECONDS) + ":", hook);
         handler.addCommand(menu);
         menu.showMenu();
     }

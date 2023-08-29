@@ -33,7 +33,7 @@ public class RoomTimetable implements SlashCommand {
     @Override
     public void action(SlashCommandInteractionEvent evt) {
         InteractionHook hook = evt.getHook();
-        //evt.deferReply().queue();
+        evt.deferReply().queue();
         String roomStr = evt.getOption("room").getAsString();
         Optional<Room> roomOpt = rooms.stream().filter(r -> r.getName().equals(roomStr)).findFirst();
         if (roomOpt.isEmpty()) {
@@ -62,7 +62,7 @@ public class RoomTimetable implements SlashCommand {
             vals.add(entry.getValue());
         }
         //vals = PaginateMenu.splitEntries(vals, 10, Function.identity());
-        PaginateMenu menu = new PaginateMenu(vals, keys, evt);
+        PaginateMenu menu = new PaginateMenu(vals, keys, hook);
         menu.showMenu();
         handler.addCommand(menu);
     }

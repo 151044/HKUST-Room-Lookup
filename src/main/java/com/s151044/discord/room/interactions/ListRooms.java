@@ -6,6 +6,7 @@ import com.s151044.discord.handlers.interactions.ButtonHandler;
 import com.s151044.discord.room.Room;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
@@ -22,6 +23,8 @@ public class ListRooms implements SlashCommand {
     }
     @Override
     public void action(SlashCommandInteractionEvent evt) {
+        evt.deferReply().queue();
+        InteractionHook hook = evt.getHook();
         if (evt.getOption("area") != null) {
             String area = evt.getOption("area").getAsString();
             List<String> toSend = rooms.stream()
@@ -31,13 +34,13 @@ public class ListRooms implements SlashCommand {
                 evt.reply("Cannot find supported rooms for " + area + "!").queue();
             } else {
                 PaginateMenu menu = new PaginateMenu(PaginateMenu.splitEntries(rooms, 10, Room::toString),
-                        "Rooms found near " + area + ":", evt);
+                        "Rooms found near " + area + ":", hook);
                 menu.showMenu();
                 handler.addCommand(menu);
             }
         } else {
             PaginateMenu menu = new PaginateMenu(PaginateMenu.splitEntries(rooms, 10, Room::toString),
-                    "Rooms supported:", evt);
+                    "Rooms supported:", hook);
             menu.showMenu();
             handler.addCommand(menu);
         }

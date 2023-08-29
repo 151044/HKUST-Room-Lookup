@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.function.Function;
 public class PaginateMenu implements ButtonCommand {
     private final List<String> embeds;
     private final List<String> titles;
-    private final SlashCommandInteractionEvent event;
+    private final InteractionHook hook;
     private final Button nextButton;
     private final Button prevButton;
     private int pos = 0;
@@ -29,12 +30,12 @@ public class PaginateMenu implements ButtonCommand {
      * Constructs a new PaginateMenu.
      * @param messages The messages to show (i.e. the main content)
      * @param titles The titles of each message (should match the number of messages)
-     * @param event The slash command interaction event to respond to
+     * @param hook The interaction hook to respond to
      */
-    public PaginateMenu(List<String> messages, List<String> titles, SlashCommandInteractionEvent event) {
+    public PaginateMenu(List<String> messages, List<String> titles, InteractionHook hook) {
         this.embeds = messages;
         this.titles = titles;
-        this.event = event;
+        this.hook = hook;
         id = ButtonHandler.allocateId();
         this.nextButton = Button.secondary("Menu_" + id + "-" + "next", "Next Page")
                 .withEmoji(Emoji.fromFormatted("➡️"));
@@ -46,10 +47,10 @@ public class PaginateMenu implements ButtonCommand {
      * Constructs a new PaginateMenu.
      * @param messages The messages to show (i.e. the main content)
      * @param title The title for each page of the menu
-     * @param event The slash command interaction event to respond to
+     * @param hook The interaction hook to respond to
      */
-    public PaginateMenu(List<String> messages, String title, SlashCommandInteractionEvent event) {
-        this(messages, Collections.nCopies(messages.size(), title), event);
+    public PaginateMenu(List<String> messages, String title, InteractionHook hook) {
+        this(messages, Collections.nCopies(messages.size(), title), hook);
     }
 
     /**
@@ -63,7 +64,7 @@ public class PaginateMenu implements ButtonCommand {
         String pageString = String.format("\n**Page %d of %d**", 1, embeds.size());
         String title = titles.get(0);
         MessageEmbed emb = Embeds.getEmbed(embeds.get(0) + pageString, title);
-        event.replyEmbeds(emb)
+        hook.sendMessageEmbeds(emb)
                 .addActionRow(prevButton, nextButton)
                 .queue();
     }

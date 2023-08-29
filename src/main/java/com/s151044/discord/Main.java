@@ -135,7 +135,7 @@ public class Main {
         List<Room> room = new ArrayList<>();
         for (String s : deptHtml) {
             Document doc = Jsoup.parse(s);
-            for (Element course : doc.getElementsByClass("courseSection")) {
+            for (Element course : doc.getElementsByClass("course")) {
                 String courseName = course.getElementsByTag("h2").get(0).text();
                 courseName = courseName.trim();
                 String[] courseArr = courseName.split(" ");
