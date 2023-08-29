@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class Main {
     private static JDA jda;
@@ -70,7 +71,7 @@ public class Main {
     }
 
     private static void fetchCourses() throws IOException {
-        String url = "https://w5.ab.ust.hk/wcq/cgi-bin/%s/";
+        String templateUrl = "https://w5.ab.ust.hk/wcq/cgi-bin/%s/";
         List<String> yes = List.of("yes", "y");
 
         Scanner in = new Scanner(System.in);
@@ -89,16 +90,28 @@ public class Main {
             monthUrl += "10";
         }
 
-        url = String.format(url, monthUrl);
+        String url = String.format(templateUrl, monthUrl);
         System.out.print("Going to fetch from " + url +". Proceed? (y/n) ");
         String yn = in.nextLine();
         if (!yes.contains(yn.toLowerCase())) {
-            System.out.print("Please input alternative year ID (in the form on 2310): ");
+            System.out.print("Please input alternative year ID (in the form of 2310): ");
             monthUrl = in.nextLine();
-            url = String.format(url, monthUrl);
+            url = String.format(templateUrl, monthUrl);
         }
 
         Path fileRoot = Path.of("data"); // prep dir for writing
+        if (Files.exists(fileRoot)) {
+            try (Stream<Path> p = Files.walk(fileRoot)) {
+                p.filter(Files::isRegularFile)
+                        .forEach(path -> {
+                            try {
+                                Files.delete(path);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+            }
+        }
         Files.deleteIfExists(fileRoot);
         Files.createDirectories(fileRoot);
 
