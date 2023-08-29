@@ -37,7 +37,7 @@ public class RoomTimetable implements SlashCommand {
         String roomStr = evt.getOption("room").getAsString();
         Optional<Room> roomOpt = rooms.stream().filter(r -> r.getName().equals(roomStr)).findFirst();
         if (roomOpt.isEmpty()) {
-            hook.sendMessage("Cannot find room with name " + roomStr + "!").queue();
+            hook.sendMessage("Cannot find room!").queue();
             return;
         }
         Room room = roomOpt.get();
@@ -46,7 +46,7 @@ public class RoomTimetable implements SlashCommand {
         if (weekdayOpt != null) {
             DayOfWeek week = TimeRecord.getWeekdays().getOrDefault(weekdayOpt.getAsString(), null);
             if (week == null) {
-                hook.sendMessage("Cannot find weekday " + weekdayOpt).queue();
+                hook.sendMessage("Cannot find weekday!").queue();
                 return;
             }
             LocalDate date = LocalDate.now().with(TemporalAdjusters.nextOrSame(week));
@@ -58,7 +58,7 @@ public class RoomTimetable implements SlashCommand {
         List<String> vals = new ArrayList<>();
         for (Map.Entry<String, String> entry : toOutput.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey()).toList()) {
-            keys.add("Room occupation for " + entry.getKey());
+            keys.add(roomStr + " occupation for " + entry.getKey());
             vals.add(entry.getValue());
         }
         //vals = PaginateMenu.splitEntries(vals, 10, Function.identity());

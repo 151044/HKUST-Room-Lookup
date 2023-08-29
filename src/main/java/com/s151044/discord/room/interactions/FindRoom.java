@@ -47,7 +47,7 @@ public class FindRoom implements SlashCommand {
         if (weekdayMapping != null) {
             DayOfWeek week = TimeRecord.getWeekday(weekdayMapping.getAsString());
             if (week == null) {
-                hook.sendMessage("Unable to find weekday " + weekdayMapping.getAsString() + ".").queue();
+                hook.sendMessage("Unable to find weekday.").queue();
                 return;
             }
             lookupDate = lookupDate.with(TemporalAdjusters.nextOrSame(week));

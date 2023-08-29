@@ -31,7 +31,7 @@ public class ListRooms implements SlashCommand {
                     .filter(location -> location.getLocation().equals(area))
                     .map(Room::getName).toList();
             if (toSend.isEmpty()) {
-                evt.reply("Cannot find supported rooms for " + area + "!").queue();
+                evt.reply("Cannot find supported rooms!").queue();
             } else {
                 PaginateMenu menu = new PaginateMenu(PaginateMenu.splitEntries(rooms, 10, Room::toString),
                         "Rooms found near " + area + ":", hook);
