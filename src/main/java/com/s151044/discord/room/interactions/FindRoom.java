@@ -68,18 +68,26 @@ public class FindRoom implements SlashCommand {
             }
             int hour = Integer.parseInt(arr[0]);
             int minutes = Integer.parseInt(arr[1]);
+            if (hour < 0 || hour > 23 || minutes < 0 || minutes > 59) {
+                hook.sendMessage("Bad time format.").queue();
+                return;
+            }
             time = LocalTime.of(hour, minutes);
         }
         LocalDateTime dateTime = LocalDateTime.of(lookupDate, time);
         List<Room> matched = list.stream().filter(r -> !r.isBlockedAt(dateTime)).toList();
-        List<String> embed = PaginateMenu.splitEntries(matched, 10, Room::toString);
-        PaginateMenu menu = new PaginateMenu(embed,
-                "Rooms available" +
-                        (areaMapping != null ? " near " + areaMapping.getAsString() : "")
-                        + " for " + lookupDate + " at "
-                        + time.truncatedTo(ChronoUnit.SECONDS) + ":", hook);
-        handler.addCommand(menu);
-        menu.showMenu();
+        if (matched.size() == 0) {
+            hook.sendMessage("Cannot find any room!").queue();
+        } else {
+            List<String> embed = PaginateMenu.splitEntries(matched, 10, Room::toString);
+            PaginateMenu menu = new PaginateMenu(embed,
+                    "Rooms available" +
+                            (areaMapping != null ? " near " + areaMapping.getAsString() : "")
+                            + " for " + lookupDate + " at "
+                            + time.truncatedTo(ChronoUnit.SECONDS) + ":", hook);
+            handler.addCommand(menu);
+            menu.showMenu();
+        }
     }
 
     @Override
@@ -103,6 +111,7 @@ public class FindRoom implements SlashCommand {
             case "area" -> evt.replyChoiceStrings(
                     rooms.stream().map(Room::getLocation).filter(location -> location.startsWith(prefix))
                             .filter(s -> !s.isEmpty())
+                            .distinct()
                             .limit(25)
                             .collect(Collectors.toList())).queue();
             case "weekday" -> evt.replyChoiceStrings(
