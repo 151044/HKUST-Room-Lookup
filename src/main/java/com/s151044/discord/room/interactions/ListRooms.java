@@ -68,4 +68,13 @@ public class ListRooms implements SlashCommand {
 
     @Override
     public void handleAutocomplete(CommandAutoCompleteInteractionEvent evt) {
+        String name = evt.getFocusedOption().getName();
+        String prefix = evt.getFocusedOption().getValue();
+        if (name.equals("area")) {
+            evt.replyChoiceStrings(
+                    rooms.stream().map(Room::getLocation).filter(location -> location.startsWith(prefix) && !location.isEmpty())
+                    .limit(25).toList()).queue();
+        }
+    }
+}
 
