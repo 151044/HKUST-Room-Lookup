@@ -1,4 +1,4 @@
-package com.s151044.discord.room;
+package com.s151044.discord.utils;
 
 import org.jetbrains.annotations.NotNull;
 

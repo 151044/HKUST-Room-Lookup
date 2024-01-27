@@ -5,47 +5,17 @@ import java.util.Objects;
 /**
  * Class representing the minimal amount of information for representing a course section.
  */
-public class CourseSection {
-    private final String name;
-    private final String dept;
-    private final String code;
-    private final String section;
-    private int units = 0;
-
+public record CourseSection(String name, String dept, String code, String section, int units) {
     /**
-     * Constructs a new Course object.
-     * @param name The name of the course
-     * @param dept The offering department of the course
-     * @param code The course code
+     * Constructs a new CourseSection object.
+     *
+     * @param name    The name of the course
+     * @param dept    The offering department of the course
+     * @param code    The course code
      * @param section The section of the course
-     * @param units The number of credits offered by the course
+     * @param units   The number of credits offered by the course
      */
-    public CourseSection(String name, String dept, String code, String section, int units) {
-        this.name = name;
-        this.dept = dept;
-        this.code = code;
-        this.section = section;
-        this.units = units;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDept() {
-        return dept;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getSection() {
-        return section;
-    }
-
-    public int getUnits() {
-        return units;
+    public CourseSection {
     }
 
     @Override

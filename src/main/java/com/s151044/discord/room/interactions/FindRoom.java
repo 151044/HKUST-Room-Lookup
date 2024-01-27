@@ -4,7 +4,7 @@ import com.s151044.discord.commands.interactions.SlashCommand;
 import com.s151044.discord.commands.interactions.buttons.PaginateMenu;
 import com.s151044.discord.handlers.interactions.ButtonHandler;
 import com.s151044.discord.room.Room;
-import com.s151044.discord.room.TimeRecord;
+import com.s151044.discord.utils.TimeRecord;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;

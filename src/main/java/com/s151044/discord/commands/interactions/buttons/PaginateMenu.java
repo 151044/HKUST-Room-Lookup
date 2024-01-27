@@ -58,7 +58,7 @@ public class PaginateMenu implements ButtonCommand {
      * Do not acknowledge the event before calling this method.
      */
     public void showMenu() {
-        if (embeds.size() == 0) {
+        if (embeds.isEmpty()) {
             throw new IllegalStateException("Empty embeds list?");
         }
         String pageString = String.format("\n**Page %d of %d**", 1, embeds.size());

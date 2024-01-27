@@ -1,17 +1,18 @@
 package com.s151044.discord;
 
+import com.google.gson.Gson;
 import com.s151044.discord.commands.CommandList;
 import com.s151044.discord.commands.SetupInteractions;
-import com.s151044.discord.room.interactions.FindRoom;
-import com.s151044.discord.room.interactions.ListRooms;
-import com.s151044.discord.room.interactions.RoomTimetable;
 import com.s151044.discord.commands.interactions.SlashCommandList;
 import com.s151044.discord.handlers.MessageHandler;
 import com.s151044.discord.handlers.interactions.ButtonHandler;
 import com.s151044.discord.handlers.interactions.SlashHandler;
 import com.s151044.discord.room.CourseSection;
 import com.s151044.discord.room.Room;
-import com.s151044.discord.room.TimeRecord;
+import com.s151044.discord.room.interactions.FindRoom;
+import com.s151044.discord.room.interactions.ListRooms;
+import com.s151044.discord.room.interactions.RoomTimetable;
+import com.s151044.discord.utils.TimeRecord;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -21,6 +22,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -31,6 +33,7 @@ import java.util.stream.Stream;
 
 public class Main {
     private static JDA jda;
+    private static Gson gson;
     public static void main(String[] args) throws IOException, InterruptedException {
         List<String> arguments = List.of(args);
         if (arguments.contains("--fetch")) {
@@ -44,10 +47,13 @@ public class Main {
                         } catch (IOException e) {
                             System.err.println("Unable to read data: ");
                             e.printStackTrace();
-                            throw new RuntimeException(e);
+                            throw new UncheckedIOException(e);
                         }
                     }).toList();
             List<Room> rooms = parseWeb(deptHtml);
+
+            gson = new Gson();
+
 
             CommandList commandList = new CommandList();
             SlashCommandList slashList = new SlashCommandList();
@@ -60,7 +66,7 @@ public class Main {
             slashList.addCommand(new FindRoom(rooms, buttonHandler));
 
             jda = JDABuilder.createDefault(System.getenv("BOT_TOKEN"))
-                    .enableIntents(GatewayIntent.MESSAGE_CONTENT)
+                    .enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MEMBERS)
                     .addEventListeners(
                             new MessageHandler("&", commandList),
                             new SlashHandler(slashList),
@@ -68,6 +74,10 @@ public class Main {
                     .build();
             jda.awaitReady();
         }
+    }
+
+    public static JDA getJda() {
+        return jda;
     }
 
     private static void fetchCourses() throws IOException {

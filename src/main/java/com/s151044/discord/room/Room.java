@@ -1,5 +1,7 @@
 package com.s151044.discord.room;
 
+import com.s151044.discord.utils.TimeRecord;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -64,6 +66,7 @@ public class Room {
         return location;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,7 +83,7 @@ public class Room {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(name);
-        if (!location.equals("")) {
+        if (!location.isEmpty()) {
             sb.append(", ").append(location);
         }
         if (capacity != -1) {
